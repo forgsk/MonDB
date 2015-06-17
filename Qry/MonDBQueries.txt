@@ -1,0 +1,153 @@
+Which of the following are types available in BSON?
+Strings, Floating-point numbers, Arrays, Objects (Subdocuments), Timestamps,
+==================================================================================================
+
+Use findOne on the collection users to find one document where the key username is "dwight", and retrieve only the key named email.
+db.users.findOne({username:"dwight"}, {email:true, _id:false})
+==================================================================================================
+QUIZ: INEQUALITIES ON STRINGS
+
+Which of the following will find all users with name between "F" and "Q" (Inclusive)?
+db.users.find( { name : { $gte : "F" , $lte : "Q" } } );
+db.users.find( { name : { $lte : "Q" , $gte : "F" } } );
+==================================================================================================
+QUIZ: USING REGEXES, $EXISTS, $TYPE
+
+Write a query that retrieves documents from a users collection where the name has a "q" in it, and the document has an email field
+db.users.find({name:{$regex:"q"}, email:{$exists:true}})
+==================================================================================================
+
+find all documents with type: essay and score: 50 and only retrieve the student field?
+db.scores.find({type:"essay", score:50},{student:true, _id:false})
+==================================================================================================
+
+finds documents with a score between 50 and 60, inclusive?
+db.scores.find({ score : { $gte : 50 , $lte : 60 } } );
+==================================================================================================
+QUIZ: USING $OR
+
+find all documents in the scores collection where the score is less than 50 or greater than 90?
+db.scores.find({$or:[{score:{$lt:50}},{score:{$gt:90}}]})
+==================================================================================================
+QUIZ: QUERYING INSIDE ARRAYS
+
+Which of the following documents would be returned by this query?
+db.products.find( { tags : "shiny" } );
+
+{ _id : 42 , name : "Whizzy Wiz-o-matic", tags : [ "awesome", "shiny" , "green" ] }
+{ _id : 1040 , name : "Snappy Snap-o-lux", tags : "shiny" }
+==================================================================================================
+QUIZ: USING $IN AND $ALL
+Which of the following documents matches this query?
+db.users.find( { friends : { $all : [ "Joe" , "Bob" ] }, favorites : { $in : [ "running" , "pickles" ] } } )
+
+{ name : "Cliff" , friends : [ "Pete" , "Joe" , "Tom" , "Bob" ] , favorites : [ "pickles", "cycling" ] }
+==================================================================================================
+Quiz: Queries with Dot Notation
+
+Write a query that finds all products that cost more than 10,000 and that have a rating of 5 or better.
+db.catalog.find({ price:{$gt:10000}, "reviews.rating":{$gte:5}})
+
+data::::
+{ product : "Super Duper-o-phonic",price : 100000000000, reviews : [ { user : "fred", comment : "Great!" , rating : 5 },{ user : "tom" , comment : "I agree with Fred, somewhat!" , rating : 4 } ]}
+{product : "Super Duper-o-phonic111", price : 100000000111, reviews : [ { user : "fred111", comment : "Great!111" , rating : 5 }, { user : "tom111" , comment : "I agree with Fred, somewhat!111" , rating : 6 }]}
+
+==================================================================================================
+Quiz: Counting Results 
+
+How would you count the documents in the scores collection where the type was "essay" and the score was greater than 90?
+db.scores.count({type:"essay", score:{$gt:90}})
+==================================================================================================
+Quiz: Wholesale Updating of a Document 
+{ "_id" : "Texas", "population" : 2500000, "land_locked" : 1 }
+and you issued the query: db.foo.update({_id:"Texas"},{population:30000000})
+
+output:    { "_id" : "Texas", "population" : 30000000 } 
+==================================================================================================
+Quiz: Using the $set Command
+
+set myrnarackham's country code to "RU" but leave the rest of the document (and the rest of the collection) unchanged.
+db.users.update({_id:"myrnarackham"},{$set:{"country":"RU"}})
+
+==================================================================================================
+Quiz: Using the $unset Command
+Write an update query that will remove the "interests" field in the following document in the users collection. 
+{ 
+    "_id" : "jimmy" , 
+    "favorite_color" : "blue" , 
+    "interests" : [ "debating" , "politics" ] 
+}
+
+db.users.update({_id:"jimmy"},{$unset:{"interests":1}})
+==================================================================================================
+QUIZ: USING $PUSH, $POP, $PULL, $PUSHALL, $PULLALL, $ADDTOSET
+
+
+{ _id : "Mike", interests : [ "chess", "botany" ] }
+
+What will the result of the following updates be?
+db.friends.update( { _id : "Mike" }, { $push : { interests : "skydiving" } } );
+db.friends.update( { _id : "Mike" }, { $pop : { interests : -1 } } );
+db.friends.update( { _id : "Mike" }, { $addToSet : { interests : "skydiving" } } );
+db.friends.update( { _id : "Mike" }, { $pushAll: { interests : [ "skydiving" , "skiing" ] } } );
+Ans:::
+{ "_id" : "Mike", "interests" : [ "botany", "skydiving", "skydiving", "skiing" ] }
+==================================================================================================
+QUIZ: UPSERTS
+
+After performing the following update on an empty collection
+db.foo.update( { username : 'bar' }, { '$set' : { 'interests': [ 'cat' , 'dog' ] } } , { upsert : true } );
+
+{ "_id" : ObjectId("507b78232e8dfde94c149949"), "interests" : [ "cat", "dog" ], "username" : "bar" }
+==================================================================================================
+
+QUIZ: MULTI-UPDATE
+
+{
+	"_id" : ObjectId("50844162cb4cf4564b4694f8"),
+	"student" : 0,
+	"type" : "exam",
+	"score" : 75
+}
+Give every document with a score less than 70 an extra 20 points. 
+
+Ans: db.scores.update({score:{$lt:70}},{$inc:{score:20}}, {multi:true})
+
+==================================================================================================
+QUIZ: REMOVING DATA
+
+Delete every document with a score of less than 60. 
+
+db.scores.remove({score:{$lt:60}})
+==================================================================================================
+**********************************************************************************************************************************************
+
+
+==================================================================================================
+
+
+==================================================================================================
+
+
+==================================================================================================
+
+
+==================================================================================================
+
+
+==================================================================================================
+
+
+==================================================================================================
+
+
+==================================================================================================
+
+
+==================================================================================================
+
+
+######################################################################
+
+
+
