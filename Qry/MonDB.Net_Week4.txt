@@ -16,9 +16,7 @@ Document-level concurrency
 Compression
 
 4.
-Please provide the mongo shell command to add an index to a collection named students, having the index key be class, student_name. 
-
-Neither will go in the "-1" direction..
+Please provide the mongo shell command to add an index to a collection named students, having the index key be class, student_name. Neither will go in the "-1" direction..
 db.students.createIndex({class:1, student_name:1})
 
 #.
@@ -58,6 +56,11 @@ db.students.createIndex({student_id:1, class_id:1}, {unique:true})
 What are the advantages of a sparse index? Check all that apply.
 You can gain greater flexibility with creating Unique indexes.
 The index will be smaller than it would if it were not sparse.
+
+#.
+Which things are true about creating an index in the background in MongoDB. Check all that apply.
+Although the database server will continue to take requests, a background index creation still blocks the mongo shell that you are using to create the index.
+Creating an index in the background takes longer than creating it in the foreground
 --------------------------------------------------------------------------------------------------
 
 Notes:
@@ -84,7 +87,15 @@ db.students.getIndexes();
 db.students.dropIndex({student_id:1}) //same index name usedd while creating
 
 .Sparce Index
-if you create unique index on existing collection, data should be unique already. Andin case if for any attribute onwhich unique index 
+if you create unique index on existing collection, data should be unique already. Andin case if for any attribute onwhich unique index is created, and if it is null for few documents it throws error. o avoid 
 
-is created, and if it is null for few documents it throws error. o avoid this error we create sparce index and it says to ignore the nulls Sparce index willnot be used while sorting data if there are null in the values
+this error we create sparce index and it says to ignore the nulls
+Sparce index willnot be used while sorting data if there are null in the values
+
+.
+Index creation types
+Foreground are fast, blocks the writes and readers on this database (a problem). this is by default
+background are slow, dont block the reader writer. they will be queued and done one after the other
+
+ex:db.people.createIndex({"work_history":-1}, {background:true})
 
