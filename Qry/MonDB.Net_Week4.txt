@@ -48,7 +48,9 @@ db.foo.insert( { a : "grapes", b : "oranges" } )
 Type the command that you would issue in the Mongo shell to create an index on company, descending.
 db.people.createIndex({"work_history.company":-1})
 
-
+#.
+Please provide the mongo shell command to create a unique index on student_id, class_id, ascending for the collection students.
+db.students.createIndex({student_id:1, class_id:1}, {unique:true})
 --------------------------------------------------------------------------------------------------
 
 Notes:
