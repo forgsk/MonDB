@@ -1,0 +1,101 @@
+Week 4 Questions Answers
+------------------------
+1.
+The storage engine directly determines which of the following? Check all that apply.
+.Format of indexes
+.The data file format
+
+2.
+Which of the following statements about the MMAPv1 storage engine are true? Check all that apply.
+.MMAPv1 automatically allocates power-of-two-sized documents when new documents are inserted
+.MMAPv1 is built on top of the mmap system call that maps files into memory
+
+3.
+Which of the following are features of the WiredTiger storage engine?
+Document-level concurrency
+Compression
+
+4.
+Please provide the mongo shell command to add an index to a collection named students, having the index key be class, student_name. Neither will go in the "-1" direction..
+db.students.createIndex({class:1, student_name:1})
+
+#.
+Suppose we have a collection foo that has an index created as follows: db.foo.createIndex( { a:1, b:1 } )
+db.foo.insert( { a : ["apples", "oranges" ], b : "grapes" } )
+db.foo.insert( { a : "grapes", b : [ 8, 9, 10 ] } )
+db.foo.insert( { a : "grapes", b : "oranges" } )
+
+#.
+{
+	"_id" : ObjectId("551458821b87e1799edbebc4"),
+	"name" : "Eliot Horowitz",
+	"work_history" : [
+		{
+			"company" : "DoubleClick",
+			"position" : "Software Engineer"
+		},
+		{
+			"company" : "ShopWiki",
+			"position" : "Founder & CTO"
+		},
+		{
+			"company" : "MongoDB",
+			"position" : "Founder & CTO"
+		}
+	]
+}
+
+Type the command that you would issue in the Mongo shell to create an index on company, descending.
+db.people.createIndex({"work_history.company":-1})
+
+#.
+Please provide the mongo shell command to create a unique index on student_id, class_id, ascending for the collection students.
+db.students.createIndex({student_id:1, class_id:1}, {unique:true})
+
+#.
+What are the advantages of a sparse index? Check all that apply.
+You can gain greater flexibility with creating Unique indexes.
+The index will be smaller than it would if it were not sparse.
+
+#.
+Which things are true about creating an index in the background in MongoDB. Check all that apply.
+Although the database server will continue to take requests, a background index creation still blocks the mongo shell that you are using to create the index.
+Creating an index in the background takes longer than creating it in the foreground
+--------------------------------------------------------------------------------------------------
+
+Notes:
+======
+
+***
+to start mongod with wiredtiger option
+first time -> C:\mkdir WT
+C:\> mongod -dbpath WT -storageEngine wiredTiger
+
+next time
+
+mongod --storageEngine wiredTiger
+***
+
+Default storage engive MMAP
+WiredTiger Storage Engine
+document level concurrency
+compression of data, of indexes
+
+to find indexes
+db.students.getIndexes();
+
+db.students.dropIndex({student_id:1}) //same index name usedd while creating
+
+.Sparce Index
+if you create unique index on existing collection, data should be unique already. Andin case if for any attribute onwhich unique index is created, and if it is null for few documents it throws error. o avoid 
+
+this error we create sparce index and it says to ignore the nulls
+Sparce index willnot be used while sorting data if there are null in the values
+
+.
+Index creation types
+Foreground are fast, blocks the writes and readers on this database (a problem). this is by default
+background are slow, dont block the reader writer. they will be queued and done one after the other
+
+ex:db.people.createIndex({"work_history":-1}, {background:true})
+
