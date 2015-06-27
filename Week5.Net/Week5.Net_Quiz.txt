@@ -93,27 +93,13 @@ Suppose we have a collection of populations by postal code. The postal codes in 
 	"state" : "AL",
 	"_id" : "35045"
 }
-<<<<<<< HEAD
+
 Write an aggregation query to sum up the population (pop) by state and put the result in a field called population. 
 
 Ans:
 db.zips.aggregate( [ {"$group": {"_id":"$state", "population":{$sum:"$pop"}}}] )
 ------------------------------------------------------------------------
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-=======
-]
-)
---------------------
-update pending from off dsk
 
---------------------------------------------------
 QUIZ: USING $AVG
 Given population data by zip code (postal code), write an aggregation expression to calculate the average population of a zip code (postal code) by state
 Ans:
@@ -172,4 +158,4 @@ db.fun.aggregate([{$group:{_id:{a:"$a", b:"$b"}, c:{$max:"$c"}}}, {$group:{_id:"
 What values are returned?
 Ans: 52 and 22
 --------------------------------------------------
->>>>>>> origin/master
+
