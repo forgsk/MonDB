@@ -21,3 +21,65 @@ db.products.aggregate(
 }
 ]
 )
+--------------------
+update pending from off dsk
+
+--------------------------------------------------
+QUIZ: USING $AVG
+Given population data by zip code (postal code), write an aggregation expression to calculate the average population of a zip code (postal code) by state
+Ans:
+db.zips.aggregate([{$group:{_id:{"state":"$state"},avgpop:{$avg:"$pop"}}}])
+----------------------------------------------
+QUIZ: USING $ADDTOSET
+Write an aggregation query that will return the postal codes that cover each city. The results should look like this:
+{
+		
+			"_id" : "CENTREVILLE",
+			"postal_codes" : [
+				"22020",
+				"49032",
+				"39631",
+				"21617",
+				"35042"
+			]
+		},
+		
+
+Ans:
+db.zips.aggregate([{$group:{_id:"$city", postal_codes:{"$addToSet":"$_id"}}}])
+----------------------------------------
+QUIZ: USING $MAX AND $MIN
+
+Again thinking about the zip code database, write an aggregation query that will return the population of the postal code in each state with the highest population. It should return output that looks like this:
+{
+			"_id" : "WI",
+			"pop" : 57187
+		},
+		{
+			"_id" : "WV",
+			"pop" : 70185
+		},
+		
+Ans:
+db.zips.aggregate([{$group:{"_id":"$state", pop:{"$max":"$pop"}}}])
+
+---------------------------------------
+
+QUIZ: DOUBLE $GROUP STAGES
+
+Given the following collection:
+> db.fun.find()
+{ "_id" : 0, "a" : 0, "b" : 0, "c" : 21 }
+{ "_id" : 1, "a" : 0, "b" : 0, "c" : 54 }
+{ "_id" : 2, "a" : 0, "b" : 1, "c" : 52 }
+{ "_id" : 3, "a" : 0, "b" : 1, "c" : 17 }
+{ "_id" : 4, "a" : 1, "b" : 0, "c" : 22 }
+{ "_id" : 5, "a" : 1, "b" : 0, "c" : 5 }
+{ "_id" : 6, "a" : 1, "b" : 1, "c" : 87 }
+{ "_id" : 7, "a" : 1, "b" : 1, "c" : 97 }
+
+And the following aggregation query
+db.fun.aggregate([{$group:{_id:{a:"$a", b:"$b"}, c:{$max:"$c"}}}, {$group:{_id:"$_id.a", c:{$min:"$c"}}}])
+What values are returned?
+Ans: 52 and 22
+--------------------------------------------------
