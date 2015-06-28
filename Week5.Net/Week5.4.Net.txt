@@ -38,4 +38,13 @@ db.zips.aggregate([
        sum: {"$sum": "$pop"}
      }}
 ])
+
+Or
+
+db.zips.aggregate([
+    { $project: { _id: 0, city: 1, pop: 1 } },
+    { $match: { city: /^\d.*/ } },
+    { $group: { _id: null, pop: { $sum: "$pop" } } },
+    { $sort: { city: 1} }
+])
 Ans Value: 298015
