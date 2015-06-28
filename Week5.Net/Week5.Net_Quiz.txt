@@ -281,6 +281,27 @@ QUIZ: DOUBLE $UNWIND
 Can you reverse the effects of a double unwind (2 unwinds in a row) in our inventory collection (shown in the lesson ) with the $push operator?
 Ans:Yes
 -------------------------------------------------------------------------
+QUIZ: AGGREGATION IN .NET
+
+Given the following .NET code, what pipeline would be generated?
+
+class Person
+{
+  [BsonElement(“fn”)]
+  public string FirstName { get; set; }
+
+  BsonElement(“ln”)]
+  public string LastName { get; set; }
+
+  public int Age { get; set; }
+}
+
+var list = await db.GetCollection<Person>(“people”).Aggregate()
+	.Group(x => x.LastName, g => new { _id = g.Key, Oldest = g.Max(x => x.Age) })
+            .SortBy(x => x.Oldest)
+	.ToListAsync();
+Ans: [{ $group: { _id: “$ln”, Oldest: { $max: “$Age” } } }, { $sort: { Oldest: 1 } }]
+
 --------------------------------------------------------------------------
 Reference Qry of Aggregate with its features:
 use agg
