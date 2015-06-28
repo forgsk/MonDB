@@ -158,4 +158,156 @@ db.fun.aggregate([{$group:{_id:{a:"$a", b:"$b"}, c:{$max:"$c"}}}, {$group:{_id:"
 What values are returned?
 Ans: 52 and 22
 --------------------------------------------------
+Write an aggregation query with a single projection stage that will transform the documents in the zips collection from this:
+{
+	"city" : "ACMAR",
+	"loc" : [
+		-86.51557,
+		33.584132
+	],
+	"pop" : 6055,
+	"state" : "AL",
+	"_id" : "35004"
+}
 
+to documents in the result set that look like this:
+{
+	"city" : "acmar",
+	"pop" : 6055,
+	"state" : "AL",
+	"zip" : "35004"
+}
+Ans:
+db.zips.aggregate([
+{$project:{_id:0, city:{"$toLower":"$city"}, pop:1, state:1, zip:"$_id"}}])
+------------------------------------------------------------
+QUIZ: USING $MATCH
+
+Again, thinking about the zipcode collection, write an aggregation query with a single match phase that filters for zipcodes with greater than 100,000 people. You may need to look up the use of the $gt operator in the MongoDB docs. 
+Ans:
+db.zips.aggregate([
+{
+$match:{pop:{$gt:100000}}
+}
+])
+--------------------------------------------------------------------------
+QUIZ: USING $SORT
+
+Again, considering the zipcode collection, which has documents that look like this,
+{
+	"city" : "ACMAR",
+	"loc" : [
+		-86.51557,
+		33.584132
+	],
+	"pop" : 6055,
+	"state" : "AL",
+	"_id" : "35004"
+}
+
+Write an aggregation query with just a sort stage to sort by (state, city), both ascending. Assume the collection is called zips.
+Ans:
+db.zips.aggregate([{$sort:{state:1, city:1}}])
+--------------------------------------------------------------------------
+QUIZ: USING $LIMIT AND $SKIP
+
+Suppose you change the order of skip and limit in the query shown in the lesson, to look like this:
+db.zips.aggregate([
+    {$match:
+     {
+	 state:"NY"
+     }
+    },
+    {$group:
+     {
+	 _id: "$city",
+	 population: {$sum:"$pop"},
+     }
+    },
+    {$project:
+     {
+	 _id: 0,
+	 city: "$_id",
+	 population: 1,
+     }
+    },
+    {$sort:
+     {
+	 population:-1
+     }
+    },
+    {$limit: 5},
+    {$skip: 10} 
+])
+
+Ans: 0
+--------------------------------------------------------------------------
+QUIZ: REVISITING $FIRST AND $LAST
+
+Given the following collection:
+> db.fun.find()
+{ "_id" : 0, "a" : 0, "b" : 0, "c" : 21 }
+{ "_id" : 1, "a" : 0, "b" : 0, "c" : 54 }
+{ "_id" : 2, "a" : 0, "b" : 1, "c" : 52 }
+{ "_id" : 3, "a" : 0, "b" : 1, "c" : 17 }
+{ "_id" : 4, "a" : 1, "b" : 0, "c" : 22 }
+{ "_id" : 5, "a" : 1, "b" : 0, "c" : 5 }
+{ "_id" : 6, "a" : 1, "b" : 1, "c" : 87 }
+{ "_id" : 7, "a" : 1, "b" : 1, "c" : 97 }
+What would be the value of c in the result from this aggregation query
+db.fun.aggregate([
+    {$match:{a:0}},
+    {$sort:{c:-1}}, 
+    {$group:{_id:"$a", c:{$first:"$c"}}}
+])
+Ans: 54
+-------------------------------------------------------------------------
+QUIZ: USING $UNWIND
+
+Suppose you have the following collection:
+db.people.find()
+{ "_id" : "Barack Obama", "likes" : [ "social justice", "health care", "taxes" ] }
+{ "_id" : "Mitt Romney", "likes" : [ "a balanced budget", "corporations", "binders full of women" ] }
+And you unwind the "likes" array of each document. How many documents will you wind up with?
+Ans :6
+--------------------------------------------------------------------
+QUIZ: $UNWIND EXAMPLE
+
+Which grouping operator will enable to you to reverse the effects of an unwind?
+Ans:$push
+-----------------------------------------------------------------------
+QUIZ: DOUBLE $UNWIND
+
+Can you reverse the effects of a double unwind (2 unwinds in a row) in our inventory collection (shown in the lesson ) with the $push operator?
+Ans:Yes
+-------------------------------------------------------------------------
+--------------------------------------------------------------------------
+Reference Qry of Aggregate with its features:
+use agg
+db.zips.aggregate([
+    {$match:
+     {
+	 state:"NY"
+     }
+    },
+    {$group:
+     {
+	 _id: "$city",
+	 population: {$sum:"$pop"},
+     }
+    },
+    {$project:
+     {
+	 _id: 0,
+	 city: "$_id",
+	 population: 1,
+     }
+    },
+    {$sort:
+     {
+	 population:-1
+     }
+    },
+    {$skip: 10},
+    {$limit: 5}
+])
