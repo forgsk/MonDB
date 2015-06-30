@@ -13,6 +13,9 @@ C:\data\replica>mongod --dbpath 1 --port 27001 --smallfiles --oplogSize 50
 
 to start the mongod from partcular path as replica. first goto directory and run the below command
 C:\data\replica>mongod --dbpath 1 --replSet abc --port 27001 --smallfiles --oplogSize 50
+
+to connect to particular node, give the below command
+mongo --port 27001   /   mongo --port 27002    /OR/ mongo --port 27003
 */
 
 
