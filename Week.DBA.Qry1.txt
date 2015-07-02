@@ -1,0 +1,30 @@
+QUIZ: RECONFIGURING A REPLICA SET
+
+Which of the following statements are true about reconfiguring a replica set? Check all that apply.
+
+Servers can be either removed from the replica set, or added
+If a memeber of the replica set is not available, the replica set can still be reconfigured
+
+----------------------------------------
+QUIZ: ARBITERS
+
+When might you want to use an arbiter? Check all that apply.
+To make an odd number of votes in the replica set
+To spread the replica set over more datacenters
+To protect against network splits
+------------------------------------------------
+QUIZ: PRIORITY OPTIONS
+
+Which values are valid "priority" values in a replia set configuration? Check all that apply.
+0
+500
+88.4
+88
+--------------------------------------------
+QUIZ: HIDDEN OPTION & SLAVE DELAY
+
+Which scenarios does it make sense to use slave delay? Check all that apply.
+
+Prevent against a new client application release bug
+Getting a view of the DB between backups
+During development when using experimental queries
