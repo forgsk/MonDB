@@ -1,0 +1,77 @@
+QUIZ: WRITE CONCERN
+
+Provided you assume that the disk is persistent, what are the w and j settings required to guarantee that an insert or update has been written all the way to disk.
+
+Ans: w=1, j=1--------------------------------------------------
+QUIZ: NETWORK ERRORS
+
+What are the reasons why an application may receive an error back even if the write was successful. Check all that apply.
+Ans:
+The network TCP connection between the application and the server was reset after the server received a write but before a response could be sent.
+The MongoDB server terminates between receiving the write and responding to it.
+The network fails between the time of the write and the time the client receives a response to the write.
+
+
+--------------------------------------------------
+QUIZ: INTRODUCTION TO REPLICATION
+
+What is the minimum original number of nodes needed to assure the election of a new Primary if a node goes down?
+Ans:3
+
+--------------------------------------------------
+QUIZ: REPLICA SET ELECTIONS
+
+Which types of nodes can participate in elections of a new primary?
+
+Regular replica set members
+Hidden Members
+Arbiters
+
+--------------------------------------------------
+QUIZ: WRITE CONSISTENCY
+
+During the time when failover is occurring, can writes successfully complete?
+Ans :NO
+
+--------------------------------------------------
+QUIZ: CREATING A REPLICA SET
+
+Which command, when issued from the mongo shell, will allow you to read from a secondary?
+Ans: rs.slaveOk()
+
+--------------------------------------------------
+QUIZ: REPLICA SET INTERNALS
+
+Which of the following statements are true about replication. Check all that apply.
+Ans:
+
+Replication supports mixed-mode storage engines. For examples, a mmapv1 primary and wiredTiger secondary.
+A copy of the oplog is kept on both the primary and secondary servers.
+The oplog is implemented as a capped collection.
+
+--------------------------------------------------
+What happens if a node comes back up as a secondary after a period of being offline and the oplog has looped on the primary?
+
+Ans:The entire dataset will be copied from the primary
+--------------------------------------------------
+QUIZ: CONNECTING TO A REPLICA SET FROM .NET DRIVER
+
+If you leave a replica set node out of the seedlist within the driver, what will happen?
+
+The missing node will be discovered as long as you list at least one valid node.
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
