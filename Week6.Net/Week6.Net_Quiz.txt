@@ -60,18 +60,51 @@ If you leave a replica set node out of the seedlist within the driver, what will
 
 The missing node will be discovered as long as you list at least one valid node.
 --------------------------------------------------
+QUIZ: BAD THINGS HAPPEN TO GOOD NODES
+
+If you use the MongoClient constructor that takes a seed list of replica set members, are you guaranteed to avoid application exceptions during a primary failover?
+Ans:No
 --------------------------------------------------
+QUIZ: WRITE CONCERN REVISITED
+
+If you set w=1 and j=1, is it possible to wind up rolling back a committed write to the primary on failover?
+Yes
 --------------------------------------------------
+You can configure your applications via the drivers to read from secondary nodes within a replica set. What are the reasons that you might not want to do that? Check all that apply.
+
+If your write traffic is significantly greater than your read traffic, you may overwhelm the secondary, which must process all the writes as well as the reads. Replication lag can result.
+You may not read what you previously wrote to MongoDB.
+If the secondary hardware has insufficient memory to keep the read working set in memory, directing reads to it will likely slow it down.
 --------------------------------------------------
+If you set w=4 on a connection and there are only three nodes in the replica set, how long will you wait in PyMongo for a response from an insert if you don't set a timeout?
+ans:More than five minutes
 --------------------------------------------------
+QUIZ: INTRODUCTION TO SHARDING
+
+If the shard key is not included in a find operation and there are 4 shards, each one a replica set with 3 nodes, how many nodes will see the find operation?
+Ans:4
 --------------------------------------------------
+If you want to build a production system with two shards, each one a replica set with three nodes, how may mongod processes must you start?
+Ans:9
 --------------------------------------------------
+Suppose you wanted to shard the zip code collection after importing it. You want to shard on zip code. What index would be required to allow MongoDB to shard on zip code?
+ans:An index on zip or a non-multi-key index that starts with zip.
 --------------------------------------------------
+QUIZ: SHARDING + REPLICATION
+
+Suppose you want to run multiple mongos routers for redundancy. What level of the stack will assure that you can failover to a different mongos from within your application?
+ans:drivers
 --------------------------------------------------
---------------------------------------------------
---------------------------------------------------
---------------------------------------------------
---------------------------------------------------
---------------------------------------------------
---------------------------------------------------
+QUIZ: CHOOSING A SHARD KEY
+
+You are building a facebook competitor called footbook that will be a mobile social network of feet. You have decided that your primary data structure for posts to the wall will look like this:
+{'username':'toeguy',
+     'posttime':ISODate("2012-12-02T23:12:23Z"),
+     "randomthought": "I am looking at my feet right now",
+     'visible_to':['friends','family', 'walkers']}
+Thinking about the tradeoffs of shard key selection, select the true statements below.
+Ans:
+Choosing posttime as the shard key will cause hotspotting as time progresses.
+Choosing username as the shard key will distribute posts to the wall well across the shards.
+Choosing visible_to as a shard key is illegal.
 --------------------------------------------------
